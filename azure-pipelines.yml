@@ -13,11 +13,27 @@ stages:
   jobs:
   - job: Checkout
     steps:
-    - task: CmdLine@2
+    - task: PowerShell@2
+      displayName: Download Fortify SCA from Fotify SSC
       inputs:
+        targetType: 'inline'
         script: |
-          echo Write your commands here
+          Write-Host "Downloading SCA from SSC"
+          $BaseUrl = "https://ssc.nsth.net/ssc/downloads"
+          New-Item -ItemType directory -Path c:\_agent_distr
+          $url = "$BaseUrl/Fortify_SCA_and_Apps_23.1.0_windows_x64.exe"
+          Write-Host $url
+          $output = "c:\_agent_distr\Fortify_SCA_and_Apps_23.1.0_windows_x64.exe"
+          $wc = New-Object System.Net.WebClient
+          $wc.DownloadFile($url, $output)
           
-          echo Hello world
+          Write-Host "Downloading fortify.license from SSC"
+          $url = "$BaseUrl/fortify.license"
+          $output = "c:\_agent_distr\fortify.license"
+          Write-Host $url
+          $wc = New-Object System.Net.WebClient
+          $wc.DownloadFile($url, $output)
+          Write-Host "===Downloading Completed==="
+    
 
 
