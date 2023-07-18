@@ -24,9 +24,9 @@ stages:
           Write-Host "Downloading SCA from SSC"
           $BaseUrl = "https://ssc.nsth.net/ssc/downloads"
           New-Item -ItemType directory -Path C:\SoftwareDownload
-          $url = "$BaseUrl/Fortify_SCA_and_Apps_22.2.0_windows_x64.exe"
+          $url = "$BaseUrl/Fortify_SCA_23.1.0_windows_x64.exe"
           Write-Host $url
-          $output = "C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe"
+          $output = "C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe"
           $wc = New-Object System.Net.WebClient
           $wc.DownloadFile($url, $output)
           
@@ -42,7 +42,7 @@ stages:
     # - task: InstallFortifySCA@7
     #   displayName: Install Fortify SCA on Agent
     #   inputs:
-    #     InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe'
+    #     InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
     #     VS2015: false
     #     VS2022: true
     #     LicenseFile: 'C:\SoftwareDownload\fortify.license'
