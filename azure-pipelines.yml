@@ -34,20 +34,21 @@ stages:
           $wc = New-Object System.Net.WebClient
           $wc.DownloadFile($url, $output)
           Write-Host "===Downloading Completed==="
+          dir c:\_agent_distr
 
-    - task: InstallFortifySCA@7
-      displayName: Install Fortify SCA on Agent
-      inputs:
-        InstallerPath: 'c:\_agent_distr\Fortify_SCA_23.1.0_windows_x64.exe'
-        LicenseFile: 'c:\_agent_distr\fortify.license'
-        VS2022: true
-        RunFortifyRulepackUpdate: true
-    - task: PowerShell@2
-      inputs:
-        targetType: 'inline'
-        script: |
-          Write-Host "Post SCA Install Script"
-          Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
+    # - task: InstallFortifySCA@7
+    #   displayName: Install Fortify SCA on Agent
+    #   inputs:
+    #     InstallerPath: 'c:\_agent_distr\Fortify_SCA_23.1.0_windows_x64.exe'
+    #     LicenseFile: 'c:\_agent_distr\fortify.license'
+    #     VS2022: true
+    #     RunFortifyRulepackUpdate: true
+    # - task: PowerShell@2
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       Write-Host "Post SCA Install Script"
+    #       Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
     
 
 
