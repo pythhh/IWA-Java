@@ -12,33 +12,40 @@ stages:
     # name: "Azure-DO-Self-Hosted"
     # demands:
     #   - Agent.OS -equals Windows_NT
-    vmImage: windows-latest
+    vmImage: ubuntu-latest
   jobs:
   - job: SAST
     steps:
-    - task: PowerShell@2
-      displayName: Download Fortify SCA from Fotify SSC
+    - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
-          Write-Host "Downloading SCA from SSC"
-          $BaseUrl = "https://ssc.nsth.net/ssc/downloads"
-          New-Item -ItemType directory -Path C:\SoftwareDownload
-          $url = "$BaseUrl/Fortify_SCA_23.1.0_windows_x64.exe"
-          Write-Host $url
-          $output = "C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe"
-          $wc = New-Object System.Net.WebClient
-          $wc.DownloadFile($url, $output)
+          # Write your commands here
           
-          Write-Host "Downloading fortify.license from SSC"
-          $url = "$BaseUrl/fortify.license"
-          $output = "C:\SoftwareDownload\fortify.license"
-          Write-Host $url
-          $wc = New-Object System.Net.WebClient
-          $wc.DownloadFile($url, $output)
-          Write-Host "===Downloading Completed==="
-          dir C:\SoftwareDownload
-          C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --help
+          echo 'Hello world'
+    # - task: PowerShell@2
+    #   displayName: Download Fortify SCA from Fotify SSC
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       Write-Host "Downloading SCA from SSC"
+    #       $BaseUrl = "https://ssc.nsth.net/ssc/downloads"
+    #       New-Item -ItemType directory -Path C:\SoftwareDownload
+    #       $url = "$BaseUrl/Fortify_SCA_23.1.0_windows_x64.exe"
+    #       Write-Host $url
+    #       $output = "C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe"
+    #       $wc = New-Object System.Net.WebClient
+    #       $wc.DownloadFile($url, $output)
+          
+    #       Write-Host "Downloading fortify.license from SSC"
+    #       $url = "$BaseUrl/fortify.license"
+    #       $output = "C:\SoftwareDownload\fortify.license"
+    #       Write-Host $url
+    #       $wc = New-Object System.Net.WebClient
+    #       $wc.DownloadFile($url, $output)
+    #       Write-Host "===Downloading Completed==="
+    #       dir C:\SoftwareDownload
+    #       C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --help
     # - task: InstallFortifySCA@7
     #   displayName: Install Fortify SCA on Agent
     #   inputs:
