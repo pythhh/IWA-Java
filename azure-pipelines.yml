@@ -9,9 +9,12 @@ trigger:
 stages:
 - stage: PreBuild
   pool:
-    vmImage: windows-latest
+    name: "Azure-DO-Self-Hosted"
+    demands:
+      - Agent.OS -equals Windows_NT
+    #vmImage: windows-latest
   jobs:
-  - job: Checkout
+  - job: SAST
     steps:
     - task: PowerShell@2
       displayName: Download Fortify SCA from Fotify SSC
@@ -43,12 +46,12 @@ stages:
         VS2022: true
         LicenseFile: 'C:\SoftwareDownload\fortify.license'
         RunFortifyRulepackUpdate: true
-    # - task: PowerShell@2
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       Write-Host "Post SCA Install Script"
-    #       Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "Post SCA Install Script"
+          Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
     
 
 
