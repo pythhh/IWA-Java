@@ -9,7 +9,7 @@ trigger:
 stages:
 - stage: PreBuild
   pool:
-    vmImage: windows-2019
+    vmImage: windows-latest
   jobs:
   - job: Checkout
     steps:
@@ -39,6 +39,8 @@ stages:
       displayName: Install Fortify SCA on Agent
       inputs:
         InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
+        VS2015: false
+        VS2022: true
         LicenseFile: 'C:\SoftwareDownload\fortify.license'
         RunFortifyRulepackUpdate: true
     # - task: PowerShell@2
