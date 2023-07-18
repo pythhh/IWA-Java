@@ -9,7 +9,7 @@ trigger:
 stages:
 - stage: PreBuild
   pool:
-    vmImage: windows-latest
+    vmImage: windows-2019
   jobs:
   - job: Checkout
     steps:
