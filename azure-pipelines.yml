@@ -9,10 +9,10 @@ trigger:
 stages:
 - stage: PreBuild
   pool:
-    name: "Azure-DO-Self-Hosted"
-    demands:
-      - Agent.OS -equals Windows_NT
-    #vmImage: windows-latest
+    # name: "Azure-DO-Self-Hosted"
+    # demands:
+    #   - Agent.OS -equals Windows_NT
+    vmImage: windows-latest
   jobs:
   - job: SAST
     steps:
@@ -38,20 +38,21 @@ stages:
           $wc.DownloadFile($url, $output)
           Write-Host "===Downloading Completed==="
           dir C:\SoftwareDownload
-    - task: InstallFortifySCA@7
-      displayName: Install Fortify SCA on Agent
-      inputs:
-        InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe'
-        VS2015: false
-        VS2022: true
-        LicenseFile: 'C:\SoftwareDownload\fortify.license'
-        RunFortifyRulepackUpdate: true
-    - task: PowerShell@2
-      inputs:
-        targetType: 'inline'
-        script: |
-          Write-Host "Post SCA Install Script"
-          Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
+          C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --help
+    # - task: InstallFortifySCA@7
+    #   displayName: Install Fortify SCA on Agent
+    #   inputs:
+    #     InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe'
+    #     VS2015: false
+    #     VS2022: true
+    #     LicenseFile: 'C:\SoftwareDownload\fortify.license'
+    #     RunFortifyRulepackUpdate: true
+    # - task: PowerShell@2
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       Write-Host "Post SCA Install Script"
+    #       Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
     
 
 
