@@ -34,7 +34,7 @@ stages:
           $wc = New-Object System.Net.WebClient
           $wc.DownloadFile($url, $output)
           Write-Host "===Downloading Completed==="
-          dir
+          dir c:\_agent_distr
     # - task: InstallFortifySCA@7
     #   displayName: Install Fortify SCA on Agent
     #   inputs:
