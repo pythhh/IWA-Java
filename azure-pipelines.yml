@@ -6,14 +6,18 @@
 trigger:
 - main
 
-pool:
-  vmImage: windows-latest
+stages:
+- stage: PreBuild
+  pool:
+    vmImage: windows-latest
+  jobs:
+  - job: Checkout
+    steps:
+    - task: CmdLine@2
+      inputs:
+        script: |
+          echo Write your commands here
+          
+          echo Hello world
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
