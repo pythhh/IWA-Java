@@ -51,9 +51,10 @@ stages:
       inputs:
         InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe'
         VS2015: false
-        ScanCentralClient: true
-        LicenseFile: 'C:\SoftwareDownload\fortify.license'
+        VS2022: true
+        LicenseFile: 'fortify.license'
         RunFortifyRulepackUpdate: true
+        ProxyPort: 
  
     - task: PowerShell@2
       inputs:
