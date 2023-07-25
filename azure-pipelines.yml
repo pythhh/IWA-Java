@@ -45,7 +45,7 @@ stages:
       inputs:
         InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
         VS2015: false
-        VS2022: true
+        ScanCentralClient: true
         LicenseFile: 'C:\SoftwareDownload\fortify.license'
         RunFortifyRulepackUpdate: true
  
