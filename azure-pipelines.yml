@@ -39,13 +39,13 @@ stages:
           Write-Host "===Downloading Completed==="
           dir C:\SoftwareDownload
           cat C:\SoftwareDownload\fortify.license
-          
       enabled: true
     - task: InstallFortifySCA@7
       displayName: Install Fortify SCA on Agent
       inputs:
         InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
         VS2015: false
+        VS2022: true
         LicenseFile: 'C:\SoftwareDownload\fortify.license'
         RunFortifyRulepackUpdate: true
  
@@ -55,6 +55,8 @@ stages:
         script: |
           Write-Host "Post SCA Install Script"
           Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
+          Write-Host "##vso[task.prependpath]C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
+      enabled: true
     
 
 
