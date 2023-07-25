@@ -41,6 +41,7 @@ stages:
           cat C:\SoftwareDownload\fortify.license
       enabled: true
     - task: PowerShell@2
+      displayName: Install Fortify SCA on Agent
       inputs:
         targetType: 'inline'
         script: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --mode unattended --unattendedmodeui minimal --fortify_license_path "C:\SoftwareDownload\fortify.license" --installdir "C:\Fortify\Fortify_SCA_and_Apps" --enable-components "ScanCentralClient"'
