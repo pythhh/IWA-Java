@@ -38,16 +38,17 @@ stages:
           $wc.DownloadFile($url, $output)
           Write-Host "===Downloading Completed==="
           dir C:\SoftwareDownload
+          cat C:\SoftwareDownload\fortify.license
           
       enabled: true
-    - task: InstallFortifySCA@7
-      displayName: Install Fortify SCA on Agent
-      inputs:
-        InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
-        VS2015: false
-        VS2022: true
-        LicenseFile: 'C:\SoftwareDownload\fortify.license'
-        RunFortifyRulepackUpdate: true
+    # - task: InstallFortifySCA@7
+    #   displayName: Install Fortify SCA on Agent
+    #   inputs:
+    #     InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
+    #     VS2015: false
+    #     VS2022: true
+    #     LicenseFile: 'C:\SoftwareDownload\fortify.license'
+    #     RunFortifyRulepackUpdate: true
     # - task: PowerShell@2
     #   inputs:
     #     targetType: 'inline'
