@@ -30,21 +30,21 @@ stages:
           $wc = New-Object System.Net.WebClient
           $wc.DownloadFile($url, $output)
           
-          Write-Host "Downloading fortify.license from SSC"
-          $url = "$BaseUrl/fortify.license"
-          $output = "C:\SoftwareDownload\fortify.license"
-          Write-Host $url
-          $wc = New-Object System.Net.WebClient
-          $wc.DownloadFile($url, $output)
-          Write-Host "===Downloading Completed==="
-          dir C:\SoftwareDownload
-          cat C:\SoftwareDownload\fortify.license
+          # Write-Host "Downloading fortify.license from SSC"
+          # $url = "$BaseUrl/fortify.license"
+          # $output = "C:\SoftwareDownload\fortify.license"
+          # Write-Host $url
+          # $wc = New-Object System.Net.WebClient
+          # $wc.DownloadFile($url, $output)
+          # Write-Host "===Downloading Completed==="
+          # dir C:\SoftwareDownload
+          # cat C:\SoftwareDownload\fortify.license
       enabled: true
     - task: PowerShell@2
       displayName: Install Fortify SCA on Agent
       inputs:
         targetType: 'inline'
-        script: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --mode unattended --unattendedmodeui minimal --fortify_license_path "C:\SoftwareDownload\fortify.license" --installdir "C:\Fortify\Fortify_SCA_and_Apps" --enable-components "ScanCentralClient"'
+        script: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --mode unattended --unattendedmodeui minimal --fortify_license_path "fortify.license" --installdir "C:\Fortify\Fortify_SCA_and_Apps" --enable-components "ScanCentralClient"'
       enabled: true  
     # - task: InstallFortifySCA@7
     #   displayName: Install Fortify SCA on Agent
@@ -63,11 +63,5 @@ stages:
           Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
           Write-Host "##vso[task.prependpath]C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
       enabled: true
-    - task: PowerShell@2
-      displayName: Echo sourceanalyzer
-      inputs:
-        targetType: 'inline'
-        script: 'sourceanalyzer'
-    
 
 
