@@ -40,14 +40,19 @@ stages:
           dir C:\SoftwareDownload
           cat C:\SoftwareDownload\fortify.license
       enabled: true
-    - task: InstallFortifySCA@7
-      displayName: Install Fortify SCA on Agent
+    - task: PowerShell@2
       inputs:
-        InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
-        VS2015: false
-        ScanCentralClient: true
-        LicenseFile: 'C:\SoftwareDownload\fortify.license'
-        RunFortifyRulepackUpdate: true
+        targetType: 'inline'
+        script: '"C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe" --mode unattended --unattendedmodeui minimal --fortify_license_path "C:\SoftwareDownload\fortify.license" --installdir "C:\Fortify\Fortify_SCA_and_Apps" --enable-components "ScanCentralClient"'
+      enabled: true  
+    # - task: InstallFortifySCA@7
+    #   displayName: Install Fortify SCA on Agent
+    #   inputs:
+    #     InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe'
+    #     VS2015: false
+    #     ScanCentralClient: true
+    #     LicenseFile: 'C:\SoftwareDownload\fortify.license'
+    #     RunFortifyRulepackUpdate: true
  
     - task: PowerShell@2
       inputs:
