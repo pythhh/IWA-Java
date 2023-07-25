@@ -63,6 +63,11 @@ stages:
           Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
           Write-Host "##vso[task.prependpath]C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
       enabled: true
+    - task: PowerShell@2
+      displayName: Echo sourceanalyzer
+      inputs:
+        targetType: 'inline'
+        script: 'sourceanalyzer'
     
 
 
