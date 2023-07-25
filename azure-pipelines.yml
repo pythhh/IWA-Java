@@ -43,7 +43,7 @@ stages:
     - task: PowerShell@2
       inputs:
         targetType: 'inline'
-        script: '"C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe" --mode unattended --unattendedmodeui minimal --fortify_license_path "C:\SoftwareDownload\fortify.license" --installdir "C:\Fortify\Fortify_SCA_and_Apps" --enable-components "ScanCentralClient"'
+        script: 'C:\SoftwareDownload\Fortify_SCA_23.1.0_windows_x64.exe --mode unattended --unattendedmodeui minimal --fortify_license_path "C:\SoftwareDownload\fortify.license" --installdir "C:\Fortify\Fortify_SCA_and_Apps" --enable-components "ScanCentralClient"'
       enabled: true  
     # - task: InstallFortifySCA@7
     #   displayName: Install Fortify SCA on Agent
