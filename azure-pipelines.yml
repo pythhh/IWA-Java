@@ -40,8 +40,8 @@ stages:
           # dir C:\SoftwareDownload
           # cat C:\SoftwareDownload\fortify.license
       enabled: true
+
     - task: DownloadSecureFile@1
-      name: LicenseFile
       displayName: 'Download License File'
       inputs:
         secureFile: 'fortify.license'
