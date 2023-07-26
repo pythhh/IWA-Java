@@ -86,7 +86,7 @@ stages:
       inputs:
         applicationType: 'java'
         buildSourceVersion: '11'
-        fortifySourceTranslate: './**/*.java'
+        fortifySourceTranslate: 'src/**/*.java'
         fortifyBuildId: 'iwa-java'
         scaVerbose: true
         scaDebug: true
