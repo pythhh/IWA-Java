@@ -71,6 +71,7 @@ stages:
         script: 'mvn clean package'
       enabled: true  
     - task: FortifySCA@7
+      displayName: Scan using Fortify SCA
       inputs:
         applicationType: 'java'
         buildSourceVersion: '11'
