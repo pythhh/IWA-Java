@@ -50,7 +50,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          dir
+          dir $(Agent.TempDirectory)
     # - task: PowerShell@2
     #   displayName: Install Fortify SCA on Agent
     #   inputs:
