@@ -41,7 +41,6 @@ stages:
           $wc.DownloadFile($url, $output)
           Write-Host "===Downloading Completed==="
           dir C:\SoftwareDownload
-          cat C:\SoftwareDownload\fortify.license
       enabled: true
 
     - task: InstallFortifySCA@7
