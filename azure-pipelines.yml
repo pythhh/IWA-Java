@@ -60,4 +60,17 @@ stages:
           Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
           Write-Host "##vso[task.prependpath]C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
 
+    - task: FortifySCA@7
+      inputs:
+        applicationType: 'java'
+        buildSourceVersion: '11'
+        fortifySourceTranslate: 'test/**/*.java'
+        fortifyBuildId: 'iwa-java'
+        scaVerbose: true
+        scaDebug: true
+        fortifyScanType: 'LocalScan'
+        runFortifyUpload: true
+        fortifyServerName: 'SSC'
+        fortifyApplicationName: 'gitlab-cloud-dotnet7-web-app-cs'
+        fortifyApplicationVersion: 'v0.0.1'
  
