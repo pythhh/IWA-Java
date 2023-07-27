@@ -44,6 +44,7 @@ stages:
       enabled: true
 
     - task: InstallFortifySCA@7
+      displayName: Install Fortify SCA
       inputs:
         InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe'
         VS2015: false
@@ -51,6 +52,7 @@ stages:
         LicenseFile: 'C:\SoftwareDownload\fortify.license'
         RunFortifyRulepackUpdate: true
     - task: PowerShell@2
+      displayName: Post Fortify SCA Install
       inputs:
         targetType: 'inline'
         script: |
