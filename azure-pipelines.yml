@@ -50,4 +50,12 @@ stages:
         VS2022: true
         LicenseFile: 'C:\SoftwareDownload\fortify.license'
         RunFortifyRulepackUpdate: true
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "Post SCA Install Script"
+          Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
+          Write-Host "##vso[task.prependpath]C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
+
  
