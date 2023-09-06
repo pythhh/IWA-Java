@@ -43,7 +43,7 @@ jobs:
         env:                                            
           SC_CONTROLLER_URL: ${{ vars.SC_CONTROLLER_URL }}
           SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
-          APPLICATION: "IWA-Java2"
+          APPLICATION: "IWA-Java"
           VERSION: "v1.0"
           BUILD_OPTS: "-bt mvn"
 
