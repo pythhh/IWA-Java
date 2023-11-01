@@ -14,7 +14,7 @@ ssc_app_version_id=$SSC_APP_VERSION_ID
 # Local variables (modify as needed)
 scancentral_client_version='23.1.0'
 fcli_version='v2.0.0'
-fcli_sha='5553766f0f771abdf27f4c6b6d38a34825a64aaa5d72cfd03c68d7e2f43a49a0'
+fcli_sha='884e2679a6c59099e687184bb674fe6c86b5f5db'
 
 # Local variables (DO NOT MODIFY)
 fortify_tools_dir="/root/.fortify/tools"	
