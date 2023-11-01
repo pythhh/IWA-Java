@@ -14,7 +14,7 @@ ssc_app_version_id=$SSC_APP_VERSION_ID
 # Local variables (modify as needed)
 scancentral_client_version='23.1.0'
 fcli_version='v2.0.0'
-fcli_sha='6af0327561890bf46e97fab309eb69cd9b877f976f687740364a08d83fc7e020'
+#fcli_sha='6af0327561890bf46e97fab309eb69cd9b877f976f687740364a08d83fc7e020'
 
 # Local variables (DO NOT MODIFY)
 fortify_tools_dir="/root/.fortify/tools"	
@@ -26,6 +26,7 @@ fcli_install='fcli-linux.tgz'
 
 # Download Fortify CLI 
 wget "https://github.com/fortify-ps/fcli/releases/download/$fcli_version/fcli-linux.tgz"
+fcli_sha=$(sha256sum $fcli_install)
 
 e=$?        # return code last command
 if [ "${e}" -ne "0" ]; then
@@ -33,7 +34,7 @@ if [ "${e}" -ne "0" ]; then
 	exit 100
 fi
 # Verify integrity
-test=$(sha256sum fcli-linux.tgz)
+
 sha256sum -c <(echo "$fcli_sha $fcli_install")
 e=$?        # return code last command
 if [ "${e}" -ne "0" ]; then
@@ -46,7 +47,7 @@ mkdir -p $fcli_home/bin
 tar -xvzf "$fcli_install" -C $fcli_home/bin
 export PATH=$fcli_home/bin:$scancentral_home/bin:${PATH}
 
-fcli tool sc-client install $scancentral_client_version -d $scancentral_home
+fcli tool sc-client install -y -v $scancentral_client_version -d $scancentral_home
 
 # echo Setting connection with Fortify Platform
 # # USE --INSECURE WHEN YOUR SSL CERTIFICATES ARE SELF GENERATED/UNTRUSTED
