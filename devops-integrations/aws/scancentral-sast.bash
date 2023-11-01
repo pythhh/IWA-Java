@@ -14,7 +14,7 @@ ssc_app_version_id=$SSC_APP_VERSION_ID
 # Local variables (modify as needed)
 scancentral_client_version='23.1.0'
 fcli_version='v2.0.0'
-fcli_sha='cc7c8166b0fa1452dfb937fd5a9cc4c712fbb2a2acf4b4ec11049691397d76b0'
+fcli_sha='6af0327561890bf46e97fab309eb69cd9b877f976f687740364a08d83fc7e020'
 
 # Local variables (DO NOT MODIFY)
 fortify_tools_dir="/root/.fortify/tools"	
@@ -26,16 +26,19 @@ fcli_install='fcli-linux.tgz'
 
 # Download Fortify CLI 
 wget "https://github.com/fortify-ps/fcli/releases/download/$fcli_version/fcli-linux.tgz"
+
 e=$?        # return code last command
 if [ "${e}" -ne "0" ]; then
 	echo "ERROR: Failed to download Fortify CLI - exit code ${e}"
 	exit 100
 fi
 # Verify integrity
+test=$(sha256sum fcli-linux.tgz)
 sha256sum -c <(echo "$fcli_sha $fcli_install")
 e=$?        # return code last command
 if [ "${e}" -ne "0" ]; then
 	echo "ERROR: Fortify CLI hash does not match - exit code ${e}"
+    echo "${test}"
 	exit 100
 fi
 
