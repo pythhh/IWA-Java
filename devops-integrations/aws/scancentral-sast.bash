@@ -50,14 +50,14 @@ fcli tool sc-client install -y -v $scancentral_client_version -d $scancentral_ho
 
 echo Setting connection with Fortify Platform
 # USE --INSECURE WHEN YOUR SSL CERTIFICATES ARE SELF GENERATED/UNTRUSTED
-fcli ssc session login --url $FCLI_DEFAULT_SSC_URL --ci-token $FCLI_DEFAULT_SSC_CI_TOKEN
+fcli ssc session login --url $FCLI_DEFAULT_SSC_URL -t $FCLI_DEFAULT_SSC_CI_TOKEN
 fcli ssc session list
 
-fcli sc-sast session login --ssc-url $FCLI_DEFAULT_SSC_URL --ci-token $FCLI_DEFAULT_SSC_CI_TOKEN -c $FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN
+fcli sc-sast session login --ssc-url $FCLI_DEFAULT_SSC_URL -t $FCLI_DEFAULT_SSC_CI_TOKEN -c $FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN
 fcli sc-sast session list
 
 scancentral -help
-#scancentral package -bt mvn -o package.zip
+scancentral package -bt mvn -o package.zip
 
 #fcli sc-sast scan start --appversion=$ssc_app_version_id --upload --sensor-version=$scancentral_client_version --package-file=package.zip --store='?'
 #fcli sc-sast scan start --publish-to=$ssc_app_version_id --sensor-version=$scancentral_client_version --ssc-ci-token $FCLI_DEFAULT_SSC_CI_TOKEN --package-file=package.zip --store='?'
