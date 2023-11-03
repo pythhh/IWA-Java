@@ -5,8 +5,8 @@
 
 # The following environment variables must be defined
 export FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN=$FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN
-export FCLI_DEFAULT_SSC_USER=$FCLI_DEFAULT_SSC_USER
-export FCLI_DEFAULT_SSC_PASSWORD=$FCLI_DEFAULT_SSC_PASSWORD
+# export FCLI_DEFAULT_SSC_USER=$FCLI_DEFAULT_SSC_USER
+# export FCLI_DEFAULT_SSC_PASSWORD=$FCLI_DEFAULT_SSC_PASSWORD
 export FCLI_DEFAULT_SSC_CI_TOKEN=$FCLI_DEFAULT_SSC_CI_TOKEN
 export FCLI_DEFAULT_SSC_URL=$FCLI_DEFAULT_SSC_URL
 ssc_app_version_id=$SSC_APP_VERSION_ID
@@ -48,17 +48,17 @@ export PATH=$fcli_home/bin:$scancentral_home/bin:${PATH}
 
 fcli tool sc-client install -y -v $scancentral_client_version -d $scancentral_home
 
-# echo Setting connection with Fortify Platform
-# # USE --INSECURE WHEN YOUR SSL CERTIFICATES ARE SELF GENERATED/UNTRUSTED
-# fcli ssc session login
-# fcli sc-sast session login
+echo Setting connection with Fortify Platform
+# USE --INSECURE WHEN YOUR SSL CERTIFICATES ARE SELF GENERATED/UNTRUSTED
+cli ssc session login --url $FCLI_DEFAULT_SSC_URL -t $FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN
+fcli sc-sast session login --ssc-url $FCLI_DEFAULT_SSC_URL -t $FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN -c $FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN
 
-# scancentral package -bt mvn -o package.zip
+scancentral package -bt mvn -o package.zip
 
-# fcli sc-sast scan start --appversion=$ssc_app_version_id --upload --sensor-version=$scancentral_client_version --package-file=package.zip --store='?'
-# fcli sc-sast scan wait-for '?' --interval=30s
-# fcli ssc appversion-vuln count --appversion=$SSC_APP_VERSION_ID
+fcli sc-sast scan start --appversion=$ssc_app_version_id --upload --sensor-version=$scancentral_client_version --package-file=package.zip --store='?'
+fcli sc-sast scan wait-for '?' --interval=30s
+fcli ssc appversion-vuln count --appversion=$SSC_APP_VERSION_ID
 
-# echo Terminating connection with Fortify Platform
-# fcli sc-sast session logout
-# fcli ssc session logout
+echo Terminating connection with Fortify Platform
+fcli sc-sast session logout --no-revoke-token
+fcli ssc session logout --no-revoke-token
