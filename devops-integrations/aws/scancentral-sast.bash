@@ -26,7 +26,7 @@ fcli_install='fcli-linux.tgz'
 
 # Download Fortify CLI 
 wget "https://github.com/fortify-ps/fcli/releases/download/$fcli_version/fcli-linux.tgz"
-fcli_sha=$(sha256sum $fcli_install)
+
 
 e=$?        # return code last command
 if [ "${e}" -ne "0" ]; then
@@ -34,12 +34,11 @@ if [ "${e}" -ne "0" ]; then
 	exit 100
 fi
 # Verify integrity
-
+fcli_sha=$(sha256sum fcli-linux.tgz)
 sha256sum -c <(echo "$fcli_sha $fcli_install")
 e=$?        # return code last command
 if [ "${e}" -ne "0" ]; then
 	echo "ERROR: Fortify CLI hash does not match - exit code ${e}"
-    echo "${test}"
 	exit 100
 fi
 
