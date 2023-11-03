@@ -59,7 +59,7 @@ scancentral package -bt mvn -o package.zip
 fcli sc-sast scan start --publish-to=$ssc_app_version_id --sensor-version=$scancentral_client_version --ssc-ci-token $FCLI_DEFAULT_SC_SAST_CLIENT_AUTH_TOKEN --package-file=package.zip --store='?'
 
 fcli sc-sast scan wait-for '?' --interval=30s
-fcli ssc appversion-vuln count --appversion=$SSC_APP_VERSION_ID
+#fcli ssc appversion-vuln count --appversion=$SSC_APP_VERSION_ID
 
 echo Terminating connection with Fortify Platform
 fcli sc-sast session logout --no-revoke-token
