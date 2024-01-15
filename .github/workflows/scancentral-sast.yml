@@ -25,7 +25,7 @@ jobs:
           # A semi-colon delimited list of secrets to retrieve. See README for more details.
           secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
       - name: Test Echo Secret
-        run: printenv CLIENT_AUTH_TOKEN && printenv SSC_UPLOAD_TOKEN
+        run: echo $CLIENT_AUTH_TOKEN && echo $SSC_UPLOAD_TOKEN
         
   # Fortify-SAST:
   #   # Use the appropriate runner for building your source code
