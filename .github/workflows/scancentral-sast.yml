@@ -63,7 +63,7 @@ jobs:
           APPLICATION: "IWA-Java"
           VERSION: "v1.0"
           BUILD_OPTS: "-bt mvn"
-          # SCAN_OPTS: "-sargs -quick"
+          SCAN_OPTS: ""
 
       ### Archive ScanCentral Client logs on failure ###
       - name: Save ScanCentral Logs
