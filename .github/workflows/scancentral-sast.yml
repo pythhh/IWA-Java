@@ -6,24 +6,24 @@ on:
     branches: [ci-sast]
 
 jobs:
-  Conjur:
-    runs-on: ubuntu-latest 
-    steps:
-      - name: CyberArk Conjur Secret Fetcher Action
-        # You may pin to the exact commit or the version.
-        # uses: cyberark/conjur-action@f07e1a25d44c2a78b569b5c0e7cac258f86b2fb2
-        uses: cyberark/conjur-action@v2.0.5
-        with:
-          # The URL for CyberArk Conjur endpoint
-          url: ${{ secrets.CONJUR_URL }}
-          # The account name of your CyberArk Conjur instance
-          account: admin
-          # The Host ID to be used for authentication to CyberArk Conjur Secrets Manager e.g. host/github-action
-          host_id: ${{ secrets.CONJUR_HOST }}
-          # The API Key associated with the given Host ID
-          api_key: ${{ secrets.CONJUR_API_KEY }}
-          # A semi-colon delimited list of secrets to retrieve. See README for more details.
-          secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
+  # Conjur:
+  #   runs-on: ubuntu-latest 
+  #   steps:
+  #     - name: CyberArk Conjur Secret Fetcher Action
+  #       # You may pin to the exact commit or the version.
+  #       # uses: cyberark/conjur-action@f07e1a25d44c2a78b569b5c0e7cac258f86b2fb2
+  #       uses: cyberark/conjur-action@v2.0.5
+  #       with:
+  #         # The URL for CyberArk Conjur endpoint
+  #         url: ${{ secrets.CONJUR_URL }}
+  #         # The account name of your CyberArk Conjur instance
+  #         account: admin
+  #         # The Host ID to be used for authentication to CyberArk Conjur Secrets Manager e.g. host/github-action
+  #         host_id: ${{ secrets.CONJUR_HOST }}
+  #         # The API Key associated with the given Host ID
+  #         api_key: ${{ secrets.CONJUR_API_KEY }}
+  #         # A semi-colon delimited list of secrets to retrieve. See README for more details.
+  #         secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
         
   Fortify-SAST:
     # Use the appropriate runner for building your source code
@@ -46,6 +46,23 @@ jobs:
         with:
           java-version: 11
 
+      ### Integrate CyberArk Conjur Secret Action ###
+      - name: CyberArk Conjur Secret Fetcher Action
+        # You may pin to the exact commit or the version.
+        # uses: cyberark/conjur-action@f07e1a25d44c2a78b569b5c0e7cac258f86b2fb2
+        uses: cyberark/conjur-action@v2.0.5
+        with:
+          # The URL for CyberArk Conjur endpoint
+          url: ${{ secrets.CONJUR_URL }}
+          # The account name of your CyberArk Conjur instance
+          account: admin
+          # The Host ID to be used for authentication to CyberArk Conjur Secrets Manager e.g. host/github-action
+          host_id: ${{ secrets.CONJUR_HOST }}
+          # The API Key associated with the given Host ID
+          api_key: ${{ secrets.CONJUR_API_KEY }}
+          # A semi-colon delimited list of secrets to retrieve. See README for more details.
+          secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
+          
       ### Set up Fortify ScanCentral Client ###
       - name: Download Fortify ScanCentral Client
         uses: fortify/gha-setup-scancentral-client@v1.2.0   
