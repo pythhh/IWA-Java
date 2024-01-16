@@ -6,24 +6,24 @@ on:
     branches: [ci-sast]
 
 jobs:
-  # Conjur:
-  #   runs-on: ubuntu-latest 
-  #   steps:
-  #     - name: CyberArk Conjur Secret Fetcher Action
-  #       # You may pin to the exact commit or the version.
-  #       # uses: cyberark/conjur-action@f07e1a25d44c2a78b569b5c0e7cac258f86b2fb2
-  #       uses: cyberark/conjur-action@v2.0.5
-  #       with:
-  #         # The URL for CyberArk Conjur endpoint
-  #         url: ${{ secrets.CONJUR_URL }}
-  #         # The account name of your CyberArk Conjur instance
-  #         account: admin
-  #         # The Host ID to be used for authentication to CyberArk Conjur Secrets Manager e.g. host/github-action
-  #         host_id: ${{ secrets.CONJUR_HOST }}
-  #         # The API Key associated with the given Host ID
-  #         api_key: ${{ secrets.CONJUR_API_KEY }}
-  #         # A semi-colon delimited list of secrets to retrieve. See README for more details.
-  #         secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
+  Conjur:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: CyberArk Conjur Secret Fetcher Action
+        # You may pin to the exact commit or the version.
+        # uses: cyberark/conjur-action@f07e1a25d44c2a78b569b5c0e7cac258f86b2fb2
+        uses: cyberark/conjur-action@v2.0.5
+        with:
+          # The URL for CyberArk Conjur endpoint
+          url: ${{ secrets.CONJUR_URL }}
+          # The account name of your CyberArk Conjur instance
+          account: admin
+          # The Host ID to be used for authentication to CyberArk Conjur Secrets Manager e.g. host/github-action
+          host_id: ${{ secrets.CONJUR_HOST }}
+          # The API Key associated with the given Host ID
+          api_key: ${{ secrets.CONJUR_API_KEY }}
+          # A semi-colon delimited list of secrets to retrieve. See README for more details.
+          secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
         
   Fortify-SAST:
     # Use the appropriate runner for building your source code
@@ -45,49 +45,32 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-
-      ### Integrate CyberArk Conjur Secret Action ###
-      - name: CyberArk Conjur Secret Fetcher Action
-        # You may pin to the exact commit or the version.
-        # uses: cyberark/conjur-action@f07e1a25d44c2a78b569b5c0e7cac258f86b2fb2
-        uses: cyberark/conjur-action@v2.0.5
-        with:
-          # The URL for CyberArk Conjur endpoint
-          url: ${{ secrets.CONJUR_URL }}
-          # The account name of your CyberArk Conjur instance
-          account: admin
-          # The Host ID to be used for authentication to CyberArk Conjur Secrets Manager e.g. host/github-action
-          host_id: ${{ secrets.CONJUR_HOST }}
-          # The API Key associated with the given Host ID
-          api_key: ${{ secrets.CONJUR_API_KEY }}
-          # A semi-colon delimited list of secrets to retrieve. See README for more details.
-          secrets: client_auth_token|client_auth_token;ssc_upload_token|ssc_upload_token
           
       ### Set up Fortify ScanCentral Client ###
       - name: Download Fortify ScanCentral Client
         uses: fortify/gha-setup-scancentral-client@v1.2.0   
         with:
           version: 23.1.0                                      # On-prem customers should specify a client version that matches their ScanCentral environment
-          client-auth-token: $CLIENT_AUTH_TOKEN  # Optional, but required if ScanCentral Controller requires client authentication
+          client-auth-token:  ${{ env.CLIENT_AUTH_TOKEN }}  # Optional, but required if ScanCentral Controller requires client authentication
 
-      ### Run Fortify ScanCentral Client ###
-      # Update BUILD_OPTS based on the ScanCentral Client documentation and your project's included tech stack(s).
-      #   ScanCentral Client will download dependencies for maven, gradle and msbuild projects.
-      #   For other build tools, add your build commands to the workflow to download necessary dependencies and prepare according to Fortify SCA documentation.
-      - name: Perform SAST Scan
-        run: scancentral -url $SC_CONTROLLER_URL start $BUILD_OPTS $SCAN_OPTS -upload -application $APPLICATION -version $VERSION -uptoken $SSC_UPLOAD_TOKEN -fprssc $APPLICATION-$BUILD_NO.fpr
-        env:
-          SC_CONTROLLER_URL: ${{ vars.SC_CONTROLLER_URL }} 
-          BUILD_NO: ${{ github.run_number }} 
-          APPLICATION: "IWA-Java"
-          VERSION: "v1.0"
-          BUILD_OPTS: "-bt mvn"
-          SCAN_OPTS: "-sargs -quick"
+      # ### Run Fortify ScanCentral Client ###
+      # # Update BUILD_OPTS based on the ScanCentral Client documentation and your project's included tech stack(s).
+      # #   ScanCentral Client will download dependencies for maven, gradle and msbuild projects.
+      # #   For other build tools, add your build commands to the workflow to download necessary dependencies and prepare according to Fortify SCA documentation.
+      # - name: Perform SAST Scan
+      #   run: scancentral -url $SC_CONTROLLER_URL start $BUILD_OPTS $SCAN_OPTS -upload -application $APPLICATION -version $VERSION -uptoken $SSC_UPLOAD_TOKEN -fprssc $APPLICATION-$BUILD_NO.fpr
+      #   env:
+      #     SC_CONTROLLER_URL: ${{ vars.SC_CONTROLLER_URL }} 
+      #     BUILD_NO: ${{ github.run_number }} 
+      #     APPLICATION: "IWA-Java"
+      #     VERSION: "v1.0"
+      #     BUILD_OPTS: "-bt mvn"
+      #     SCAN_OPTS: "-sargs -quick"
 
-      ### Archive ScanCentral Client logs on failure ###
-      - name: Save ScanCentral Logs
-        uses: actions/upload-artifact@v2                
-        if: failure()
-        with:
-           name: scancentral-logs
-           path: ~/.fortify/scancentral/log
+      # ### Archive ScanCentral Client logs on failure ###
+      # - name: Save ScanCentral Logs
+      #   uses: actions/upload-artifact@v2                
+      #   if: failure()
+      #   with:
+      #      name: scancentral-logs
+      #      path: ~/.fortify/scancentral/log
