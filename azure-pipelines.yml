@@ -22,7 +22,7 @@ stages:
           targetType: 'inline'
           script: 'mvn clean package'
   - job: SCA
-    dependsOn: Build
+    dependsOn: PreBuild
     steps:
       - task: NexusIqPipelineTask@1 
         inputs:
