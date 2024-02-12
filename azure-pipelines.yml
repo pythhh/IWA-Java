@@ -16,6 +16,12 @@ stages:
     vmImage: ubuntu-latest
 
   jobs:
+  - job: Build
+    steps:
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'mvn clean package'
   - job: SCA
     steps:
       - task: NexusIqPipelineTask@1
