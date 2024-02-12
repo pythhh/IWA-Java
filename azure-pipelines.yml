@@ -15,15 +15,19 @@ stages:
     vmImage: ubuntu-latest
 
   jobs:
-  - job: PreBuild
+  # - job: PreBuild
+  #   steps:
+  #     - task: Bash@3
+  #       inputs:
+  #         targetType: 'inline'
+  #         script: 'mvn clean package'
+  - job: SCA
+    # dependsOn: PreBuild
     steps:
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: 'mvn clean package'
-  - job: SCA
-    dependsOn: PreBuild
-    steps:
       - task: NexusIqPipelineTask@1 
         inputs:
           nexusIqService: 'NEXUS IQ'
