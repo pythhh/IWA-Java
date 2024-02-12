@@ -13,65 +13,22 @@ stages:
     # name: "Azure-DO-Self-Hosted"
     # demands:
     #   - Agent.OS -equals Windows_NT
-    vmImage: windows-latest
+    vmImage: ubuntu-latest
 
   jobs:
+
   - job: SAST
     steps:
+      - task: FortifyScanCentralSAST@7
+        inputs:
+          scanCentralCtrlUrl: 'https://ssc.nsth.net/scancentral-ctrl'
+          scanCentralClientToken: '$(ScanCentral.ClientToken)'
+          sscUrl: 'https://ssc.nsth.net/ssc'
+          sscCiToken: '$(ScanCentral.SscCiToken)'
+          uploadToSSC: true
+          applicationName: 'IWA-Java'
+          applicationVersion: 'v1.0'
+          buildTool: 'mvn'
+          email: 'pattaranan.j@nsth.demo'
     
-    - task: PowerShell@2
-      displayName: Download Fortify SCA from Fotify SSC
-      inputs:
-        targetType: 'inline'
-        script: |
-          Write-Host "Downloading SCA from SSC"
-          $BaseUrl = "https://ssc.nsth.net/ssc/downloads"
-          New-Item -ItemType directory -Path C:\SoftwareDownload
-          $url = "$BaseUrl/Fortify_SCA_and_Apps_22.2.0_windows_x64.exe"
-          Write-Host $url
-          $output = "C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe"
-          $wc = New-Object System.Net.WebClient
-          $wc.DownloadFile($url, $output)
-          
-          Write-Host "Downloading fortify.license from SSC"
-          $url = "$BaseUrl/fortify.license"
-          $output = "C:\SoftwareDownload\fortify.license"
-          Write-Host $url
-          $wc = New-Object System.Net.WebClient
-          $wc.DownloadFile($url, $output)
-          Write-Host "===Downloading Completed==="
-          dir C:\SoftwareDownload
-      enabled: true
-
-    - task: InstallFortifySCA@7
-      displayName: Install Fortify SCA
-      inputs:
-        InstallerPath: 'C:\SoftwareDownload\Fortify_SCA_and_Apps_22.2.0_windows_x64.exe'
-        VS2015: false
-        VS2022: true
-        LicenseFile: 'C:\SoftwareDownload\fortify.license'
-        RunFortifyRulepackUpdate: true
-    - task: PowerShell@2
-      displayName: Post Fortify SCA Install
-      inputs:
-        targetType: 'inline'
-        script: |
-          Write-Host "Post SCA Install Script"
-          Write-Host "##vso[task.prependpath]C:\Fortify\bin\"
-          Write-Host "##vso[task.prependpath]C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\"
-
-    - task: FortifySCA@7
-      displayName: Run Fortify SCA Assessment
-      inputs:
-        applicationType: 'java'
-        buildSourceVersion: '11'
-        fortifySourceTranslate: 'src/test/**/*.java'
-        fortifyBuildId: 'iwa-java'
-        scaVerbose: true
-        scaDebug: true
-        fortifyScanType: 'LocalScan'
-        runFortifyUpload: true
-        fortifyServerName: 'SSC'
-        fortifyApplicationName: 'gitlab-cloud-dotnet7-web-app-cs'
-        fortifyApplicationVersion: 'v0.0.1'
  
