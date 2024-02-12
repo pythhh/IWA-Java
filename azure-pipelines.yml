@@ -8,7 +8,6 @@ trigger:
 
 stages:
 - stage: PreBuild
-  
   pool:
     # name: "Azure-DO-Self-Hosted"
     # demands:
@@ -16,7 +15,7 @@ stages:
     vmImage: ubuntu-latest
 
   jobs:
-  - job: Build
+  - job: Pre-Build
     steps:
       - task: Bash@3
         inputs:
@@ -31,20 +30,22 @@ stages:
           organizationId: '8f0895dbdb664a7fa14e7c45120cf334'
           applicationId: 'iwa-java-ado'
           stage: 'Build'
-          scanTargets: 'pom.xml'
+          scanTargets: 'pom.xml, **/target/**.jar'
+          scanPipelineWorkspace: true
           enableDebugLogging: true
-  - job: SAST
-    steps:
-      - task: FortifyScanCentralSAST@7
-        inputs:
-          scanCentralCtrlUrl: 'https://ssc.nsth.net/scancentral-ctrl'
-          scanCentralClientToken: '$(ScanCentral.ClientToken)'
-          sscUrl: 'https://ssc.nsth.net/ssc'
-          sscCiToken: '$(ScanCentral.SscCiToken)'
-          uploadToSSC: true
-          applicationName: 'IWA-Java'
-          applicationVersion: 'v1.0'
-          buildTool: 'mvn'
-          email: 'pattaranan.j@nsth.demo'
-    
+  # - job: SAST
+  #   steps:
+  #     - task: FortifyScanCentralSAST@7
+  #       inputs:
+  #         scanCentralCtrlUrl: 'https://ssc.nsth.net/scancentral-ctrl'
+  #         scanCentralClientToken: '$(ScanCentral.ClientToken)'
+  #         sscUrl: 'https://ssc.nsth.net/ssc'
+  #         sscCiToken: '$(ScanCentral.SscCiToken)'
+  #         uploadToSSC: true
+  #         applicationName: 'IWA-Java'
+  #         applicationVersion: 'v1.0'
+  #         buildTool: 'mvn'
+  #         email: 'pattaranan.j@nsth.demo'
+
+
  
