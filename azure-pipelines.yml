@@ -15,7 +15,7 @@ stages:
     vmImage: ubuntu-latest
 
   jobs:
-  - job: Pre-Build
+  - job: PreBuild
     steps:
       - task: Bash@3
         inputs:
