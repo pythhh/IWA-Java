@@ -16,7 +16,16 @@ stages:
     vmImage: ubuntu-latest
 
   jobs:
-
+  - job: SCA
+    steps:
+      - task: NexusIqPipelineTask@1
+        inputs:
+          nexusIqService: 'NEXUS IQ'
+          organizationId: '8f0895dbdb664a7fa14e7c45120cf334'
+          applicationId: 'iwa-java-ado'
+          stage: 'Build'
+          scanTargets: 'pom.xml'
+          enableDebugLogging: true
   - job: SAST
     steps:
       - task: FortifyScanCentralSAST@7
