@@ -1,0 +1,51 @@
+<settings>
+	<mirrors>
+		<mirror>
+			<id>IWA-Java</id>
+			<mirrorOf>*</mirrorOf>
+			<url>https://nexus.nsth.net/repository/maven-proxy/</url>
+		</mirror>
+	</mirrors>
+
+	<profiles>
+		<profile>
+			<id>IWA-Java</id>
+			<repositories>
+				<repository>
+					<id>central</id>
+					<url>http://central</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>central</id>
+					<url>http://central</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+
+	<activeProfiles>
+		<activeProfile>nexus</activeProfile>
+	</activeProfiles>
+
+	<servers>
+		<server>
+			<id>nexus</id>
+			<username>ado-svc</username>
+			<password>admin123</password>
+		</server>
+	</servers>
+</settings>

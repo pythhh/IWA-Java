@@ -17,6 +17,19 @@
     <packaging>${packaging.type}</packaging>
     <description>Insecure Web App (IWA) Pharmacy Direct</description>
 
+    <distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<name>maven-proxy</name>
+			<url>https://nexus.nsth.net/repository/maven-proxy/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Internal Snapshot Releases</name>
+			<url>https://nexus.nsth.net/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
     <licenses>
         <license>
             <name>GNU General Public License</name>
