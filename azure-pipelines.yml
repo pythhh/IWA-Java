@@ -15,12 +15,6 @@ stages:
     vmImage: ubuntu-latest
 
   jobs:
-  # - job: PreBuild
-  #   steps:
-  #     - task: Bash@3
-  #       inputs:
-  #         targetType: 'inline'
-  #         script: 'mvn clean package'
   - job: SCA
     # dependsOn: PreBuild
     steps:
@@ -50,6 +44,18 @@ stages:
   #         applicationVersion: 'v1.0'
   #         buildTool: 'mvn'
   #         email: 'pattaranan.j@nsth.demo'
-
+- stage: Build
+  pool:
+    vmImage: ubuntu-latest
+  jobs:
+  - job: Build
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+        
+          sh 'docker info'
 
  
