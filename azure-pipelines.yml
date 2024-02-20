@@ -4,58 +4,82 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- ci-sast
 
-stages:
-- stage: PreBuild
-  pool:
-    # name: "Azure-DO-Self-Hosted"
-    # demands:
-    #   - Agent.OS -equals Windows_NT
+pool:
     vmImage: ubuntu-latest
 
+stages:
+- stage: CI
+
   jobs:
-  - job: SCA
-    # dependsOn: PreBuild
+  - job: CodeSecurity
     steps:
-      - task: Bash@3
+      - task: CmdLine@2
+        displayName: "CheckPoint Spectral Scan"
         inputs:
-          targetType: 'inline'
-          script: 'mvn clean package'
+          script: |
+            echo "Install Spectral"
+            curl -L 'https://spectral-eu.checkpoint.com/latest/x/sh?dsn=$(SPECTRAL_DSN)' | sh
+            echo "Spectral Scan"
+            $HOME/.spectral/spectral scan --ok --dsn $(SPECTRAL_DSN) --engines secrets,iac,oss --include-tags base,audit3,iac
+  - job: SCA
+    steps:
       - task: NexusIqPipelineTask@1 
+        displayName: "Sonatype Nexus IQ Scan"
         inputs:
           nexusIqService: 'NEXUS IQ'
           organizationId: '8f0895dbdb664a7fa14e7c45120cf334'
           applicationId: 'iwa-java-ado'
           stage: 'Build'
-          scanTargets: 'pom.xml, **/target/**.jar'
+          scanTargets: 'pom.xml'
           scanPipelineWorkspace: true
           enableDebugLogging: true
-  # - job: SAST
-  #   steps:
-  #     - task: FortifyScanCentralSAST@7
-  #       inputs:
-  #         scanCentralCtrlUrl: 'https://ssc.nsth.net/scancentral-ctrl'
-  #         scanCentralClientToken: '$(ScanCentral.ClientToken)'
-  #         sscUrl: 'https://ssc.nsth.net/ssc'
-  #         sscCiToken: '$(ScanCentral.SscCiToken)'
-  #         uploadToSSC: true
-  #         applicationName: 'IWA-Java'
-  #         applicationVersion: 'v1.0'
-  #         buildTool: 'mvn'
-  #         email: 'pattaranan.j@nsth.demo'
-- stage: Build
-  pool:
-    vmImage: ubuntu-latest
-  jobs:
+
+  - job: SAST
+    steps:
+      - task: FortifyScanCentralSAST@7
+        displayName: "Fortify ScanCentral SAST Scan"
+        inputs:
+          scanCentralCtrlUrl: 'https://ssc.nsth.net/scancentral-ctrl'
+          scanCentralClientToken: '$(ScanCentral.ClientToken)'
+          sscUrl: 'https://ssc.nsth.net/ssc'
+          sscCiToken: '$(ScanCentral.SscCiToken)'
+          uploadToSSC: true
+          applicationName: 'IWA-Java'
+          applicationVersion: 'v1.0'
+          buildTool: 'mvn'
+          email: 'pattaranan.j@nsth.demo'
+
   - job: Build
     steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-        
-          docker info
-
+      - task: DownloadSecureFile@1
+        name: mvnSettingsFile
+        displayName: 'Download Maven Settings File'
+        inputs:
+          secureFile: 'settings.xml'
+      - task: Maven@4
+        displayName: 'Build'
+        inputs:
+          mavenPomFile: 'pom.xml'
+          options: '-Pjar -s $(mvnSettingsFile.secureFilePath)'
+          publishJUnitResults: false
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - task: Bash@3
+        displayName: "Build JAR to Docker Image"
+        inputs:
+          targetType: 'inline'
+          script: |
+            docker image build -t iwa -f Dockerfile .
+            docker image tag iwa docker-group.nexus.nsth.net/iwa:$(Build.BuildNumber)
+            docker ps
+            docker image ls
+          
+            docker login -u ado-svc -p admin123 docker-group.nexus.nsth.net
+            docker image push docker-group.nexus.nsth.net/iwa:$(Build.BuildNumber)
+            docker logout
  

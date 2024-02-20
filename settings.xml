@@ -1,7 +1,7 @@
 <settings>
 	<mirrors>
 		<mirror>
-			<id>IWA-Java</id>
+			<id>nexus</id>
 			<mirrorOf>*</mirrorOf>
 			<url>https://nexus.nsth.net/repository/maven-proxy/</url>
 		</mirror>
@@ -9,7 +9,7 @@
 
 	<profiles>
 		<profile>
-			<id>IWA-Java</id>
+			<id>nexus</id>
 			<repositories>
 				<repository>
 					<id>central</id>
