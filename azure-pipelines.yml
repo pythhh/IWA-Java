@@ -26,15 +26,12 @@ stages:
   - job: SCA
     steps:
       - task: NexusIqPipelineTask@1 
-        displayName: "Sonatype Nexus IQ Scan"
         inputs:
           nexusIqService: 'NEXUS IQ'
           organizationId: '8f0895dbdb664a7fa14e7c45120cf334'
           applicationId: 'iwa-java-ado'
           stage: 'Build'
           scanTargets: 'pom.xml'
-          scanPipelineWorkspace: true
-          enableDebugLogging: true
 
   - job: SAST
     steps:
@@ -59,7 +56,7 @@ stages:
         inputs:
           secureFile: 'settings.xml'
       - task: Maven@4
-        displayName: 'Build'
+        displayName: 'Maven Build'
         inputs:
           mavenPomFile: 'pom.xml'
           options: '-Pjar -s $(mvnSettingsFile.secureFilePath)'
@@ -76,10 +73,35 @@ stages:
           script: |
             docker image build -t iwa -f Dockerfile .
             docker image tag iwa docker-group.nexus.nsth.net/iwa:$(Build.BuildNumber)
-            docker ps
-            docker image ls
+            docke image ls
           
             docker login -u ado-svc -p admin123 docker-group.nexus.nsth.net
             docker image push docker-group.nexus.nsth.net/iwa:$(Build.BuildNumber)
             docker logout
- 
+
+  - job: ContainerSecurity
+    steps:
+      - task: Docker@2
+        displayName: 'Login to Aqua Registry'
+        inputs:
+          containerRegistry: 'aqua.nexus.nsth.net'
+          command: 'login'
+      - task: Bash@3
+        displayName: 'Docker Pull image'
+        inputs:
+          targetType: 'inline'
+          script: |
+            # Write your commands here
+            ls -l
+            docker image pull docker-group.nexus.nsth.net/iwa:$(Build.BuildNumber)
+            docker ps
+      - task: aquasecScanner@4
+        inputs:
+          image: 'docker-group.nexus.nsth.net/iwa:$(Build.BuildNumber)'
+          scanType: 'local'
+          containerRuntime: 'docker'
+          register: false
+          hideBase: false
+          showNegligible: false
+          scanner: 'aqua.nexus.nsth.net/scanner:6.5'
+          connection: 'AQUA'
